@@ -34,6 +34,7 @@ python-calculator/
 ├── tailwind.config.ts      # Tailwind design configuration
 ├── tsconfig.json           # Standard Next.js / TypeScript rules
 ├── package.json            # React 19, Next 15, TensorFlow.js & Framer Motion
+├── digit_predictor_pytorch.ipynb # PyTorch + Jupyter edition of the whole app (single notebook)
 ├── app/
 │   ├── globals.css         # Custom slate variables, dark mode styling, & scrollbars
 │   ├── layout.tsx          # Page SEO metadata & HTML wrapping
@@ -78,3 +79,15 @@ Draw any digit from **0 to 9** on the canvas, watch the synapses animate, and vi
 The network compiles with an **Adam optimizer** at a learning rate of `0.01` and **Categorical Crossentropy loss**. It fits weights on our smoothed synthetic stroke variations across 45 epochs:
 - **Accuracy:** converges to $\ge 98.0\%$ in under 1 second.
 - **Inference Time:** averages $\sim 2.1\text{ms}$ on CPU/WebGL.
+
+---
+
+## 📓 PyTorch Notebook Edition
+
+[`digit_predictor_pytorch.ipynb`](digit_predictor_pytorch.ipynb) packs the whole app into a single Jupyter notebook. **PyTorch** replaces TensorFlow.js, and a pure-Python [Gradio](https://www.gradio.app) UI, shown inline in the notebook, replaces Next.js. The Next.js app above is unchanged.
+
+- **Same model:** 784 → 128 (ReLU) → 64 (ReLU) → 10 (Softmax), Glorot-normal init, Adam (lr `0.01`), categorical cross-entropy, 45 epochs, batch size 16.
+- **Same data:** a port of `generateSyntheticData()` that produces identical samples.
+- **Same UI:** live training progress, 280×280 drawing board (with clear/undo), prediction card with inference time, **Retrain Weights**, probability bars and the network visualizer.
+
+Open it in JupyterLab, Jupyter Notebook 7, VS Code or Google Colab and **Run All**. The first cell installs `torch`, `gradio` and `matplotlib` if they are missing. When the live training finishes, pick the brush tool on the sketchpad and draw a digit.
